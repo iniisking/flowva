@@ -1,16 +1,19 @@
 # flowva
 
-A new Flutter project.
+## Run the following command to generate the asset references:
 
-## Getting Started
+flutter pub run build_runner build
 
-This project is a starting point for a Flutter application.
+## If you want it to automatically rebuild when assets change:
 
-A few resources to get you started if this is your first Flutter project:
+flutter pub run build_runner watch
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### run g. enerator - assets, fonts, localization of content
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+dart run build_runner build --delete-conflicting-outputs
+
+### run to remove unused imports
+
+dart fix --apply --code=unused_import
+
+<!-- also just in case i need you to implement this vendor not available and food not available on the @vendor_details.dart also make the item unclickable and unlikable and it should have the same kind of indicator as the other screens you did earlier  -->

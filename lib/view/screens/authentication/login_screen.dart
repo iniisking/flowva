@@ -1,12 +1,15 @@
+import 'package:flowva/core/controller/auth_controller.dart';
 import 'package:flowva/gen/assets.gen.dart';
 import 'package:flowva/view/widgets/color.dart';
 import 'package:flowva/view/widgets/text.dart';
 import 'package:flowva/view/widgets/textfield.dart';
 import 'package:flowva/view/widgets/button.dart';
+import 'package:flowva/view/widgets/toast_infos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,15 +19,91 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _emailFilled = false;
+  bool _passwordFilled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen to text changes to update button state
+    _emailController.addListener(_updateButtonState);
+    _passwordController.addListener(_updateButtonState);
+  }
+
+  void _updateButtonState() {
+    setState(() {
+      _emailFilled = _emailController.text.trim().isNotEmpty;
+      _passwordFilled = _passwordController.text.trim().isNotEmpty;
+    });
+  }
 
   @override
   void dispose() {
+    _emailController.removeListener(_updateButtonState);
+    _passwordController.removeListener(_updateButtonState);
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter your email address';
+    }
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(value.trim())) {
+      return 'Please enter a valid email address';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null;
+  }
+
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    final authController = context.read<AuthController>();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    try {
+      final success = await authController.signInWithEmail(
+        email: email,
+        password: password,
+      );
+
+      if (success) {
+        toastInfo(msg: 'Login successful!');
+        // AuthWrapper will automatically navigate to HomeScreen
+      }
+    } catch (e) {
+      // Handle different error types
+      String errorMessage = 'Login failed. Please try again.';
+
+      if (e.toString().contains('Invalid login credentials')) {
+        errorMessage = 'Invalid email or password';
+      } else if (e.toString().contains('Email not confirmed')) {
+        errorMessage = 'Please verify your email before logging in';
+      } else if (e.toString().contains('network')) {
+        errorMessage = 'Network error. Please check your connection';
+      }
+
+      toastError(msg: errorMessage);
+    }
   }
 
   @override
@@ -95,43 +174,63 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 20.spMin),
 
-                          //email field
-                          AuthTextFormField(
-                            controller: _emailController,
-                            hintText: 'Enter your email',
-                            keyboardType: TextInputType.emailAddress,
-                            autofillHints: const [AutofillHints.email],
-                          ),
-                          SizedBox(height: 8.spMin),
+                          // Form with validation
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                //email field
+                                AuthTextFormField(
+                                  controller: _emailController,
+                                  hintText: 'Enter your email',
+                                  keyboardType: TextInputType.emailAddress,
+                                  autofillHints: const [AutofillHints.email],
+                                  validator: _validateEmail,
+                                ),
+                                SizedBox(height: 8.spMin),
 
-                          //password field
-                          AuthTextFormField(
-                            controller: _passwordController,
-                            hintText: 'Enter your password',
-                            obscureText: _obscurePassword,
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscurePassword
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.visibility_outlined,
-                                color: textColor2,
-                                size: 20.spMin,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscurePassword = !_obscurePassword;
-                                });
-                              },
+                                //password field
+                                AuthTextFormField(
+                                  controller: _passwordController,
+                                  hintText: 'Enter your password',
+                                  obscureText: _obscurePassword,
+                                  validator: _validatePassword,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_off_outlined
+                                          : Icons.visibility_outlined,
+                                      color: textColor2,
+                                      size: 20.spMin,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscurePassword = !_obscurePassword;
+                                      });
+                                    },
+                                  ),
+                                  autofillHints: const [AutofillHints.password],
+                                ),
+                              ],
                             ),
-                            autofillHints: const [AutofillHints.password],
                           ),
                           SizedBox(height: 12.spMin),
                           //continue button
-                          CustomButton(
-                            hintText: 'Continue',
-                            color: Colors.black,
-                            onTap: () async {
-                              // Handle login logic here
+                          Consumer<AuthController>(
+                            builder: (context, authController, child) {
+                              final fieldsFilled =
+                                  _emailFilled && _passwordFilled;
+
+                              return CustomButton(
+                                hintText: 'Continue',
+                                color: Colors.black,
+                                onTap:
+                                    (authController.isLoading || !fieldsFilled)
+                                    ? null
+                                    : () async {
+                                        await _handleLogin();
+                                      },
+                              );
                             },
                           ),
                           SizedBox(height: 12.spMin),

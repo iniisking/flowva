@@ -1,8 +1,24 @@
-import 'package:flowva/view/screens/authentication/login_screen.dart';
+import 'package:flowva/config/supabase_config.dart';
+import 'package:flowva/core/services/supabase_service.dart';
+import 'package:flowva/core/controller/auth_controller.dart';
+import 'package:flowva/core/auth/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: '.env');
+
+  // Initialize Supabase
+  await SupabaseService.initialize(
+    supabaseUrl: SupabaseConfig.supabaseUrl,
+    supabaseAnonKey: SupabaseConfig.supabaseAnonKey,
+  );
+
   runApp(const MyApp());
 }
 
@@ -16,13 +32,16 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flowva',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        return MultiProvider(
+          providers: [ChangeNotifierProvider(create: (_) => AuthController())],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flowva',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            ),
+            home: const AuthWrapper(),
           ),
-          home: const LoginScreen(),
         );
       },
     );

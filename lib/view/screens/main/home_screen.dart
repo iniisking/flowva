@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flowva/core/controller/auth_controller.dart';
 import 'package:flowva/view/widgets/button.dart';
 import 'package:flowva/view/widgets/toast_infos.dart';
+import 'package:flowva/view/widgets/color.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,7 +23,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      backgroundColor: homeBackgroundColor,
       body: Center(
         child: Consumer<AuthController>(
           builder: (context, authController, child) {

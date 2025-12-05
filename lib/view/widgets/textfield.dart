@@ -50,51 +50,44 @@ class AuthTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height.spMin,
-      child: TextFormField(
-        autofillHints: autofillHints,
-        textInputAction: TextInputAction.next,
-        obscureText: obscureText,
-        controller: controller,
-        keyboardType: keyboardType,
-        validator: validator,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        maxLines: maxLines,
-        readOnly: readOnly,
-        enabled: enabled,
-        cursorColor: primaryColor2,
-        style: GoogleFonts.dmSans(
+    return TextFormField(
+      autofillHints: autofillHints,
+      textInputAction: TextInputAction.next,
+      obscureText: obscureText,
+      controller: controller,
+      keyboardType: keyboardType,
+      validator: validator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      maxLines: maxLines,
+      readOnly: readOnly,
+      enabled: enabled,
+      cursorColor: primaryColor2,
+      style: GoogleFonts.dmSans(
+        fontSize: 16.spMin,
+        color: textColor,
+        fontWeight: FontWeight.w400,
+        letterSpacing: -0.32, // -2% of 16px
+        height: 20 / 16, // line-height: 20px / font-size: 16px
+      ),
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: GoogleFonts.dmSans(
           fontSize: 16.spMin,
-          color: textColor,
+          color: textColor2,
           fontWeight: FontWeight.w400,
           letterSpacing: -0.32, // -2% of 16px
           height: 20 / 16, // line-height: 20px / font-size: 16px
         ),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: GoogleFonts.dmSans(
-            fontSize: 16.spMin,
-            color: textColor2,
-            fontWeight: FontWeight.w400,
-            letterSpacing: -0.32, // -2% of 16px
-            height: 20 / 16, // line-height: 20px / font-size: 16px
-          ),
-          filled: true,
-          fillColor: fillColor ?? Colors.transparent,
-          contentPadding: EdgeInsets.all(padding.spMin),
-          focusedBorder: _buildBorder(borderColor),
-          focusedErrorBorder: _buildBorder(redErrorColor),
-          enabledBorder: _buildBorder(borderColor),
-          errorBorder: _buildBorder(redErrorColor),
-          disabledBorder: _buildBorder(borderColor),
-          errorStyle: GoogleFonts.dmSans(
-            fontSize: 12.spMin,
-            color: redErrorColor,
-            fontWeight: FontWeight.w400,
-          ),
-          suffixIcon: suffixIcon,
-        ),
+        filled: true,
+        fillColor: fillColor ?? Colors.transparent,
+        isDense: true,
+        contentPadding: EdgeInsets.all(padding.spMin),
+        focusedBorder: _buildBorder(borderColor),
+        focusedErrorBorder: _buildBorder(redErrorColor),
+        enabledBorder: _buildBorder(borderColor),
+        errorBorder: _buildBorder(redErrorColor),
+        disabledBorder: _buildBorder(borderColor),
+        suffixIcon: suffixIcon,
       ),
     );
   }

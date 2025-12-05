@@ -222,7 +222,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _emailFilled && _passwordFilled;
 
                               return CustomButton(
-                                hintText: 'Continue',
+                                text: authController.isLoading
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 20.spMin,
+                                            width: 20.spMin,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                              backgroundColor: Colors.grey,
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                          SizedBox(width: 8.spMin),
+                                          CustomTextWidget(
+                                            text: 'Logging In...',
+                                            color: Colors.white,
+                                            fontSize: 16.spMin,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ],
+                                      )
+                                    : CustomTextWidget(
+                                        text: 'Continue',
+                                        color: Colors.white,
+                                        fontSize: 16.spMin,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                 color: Colors.black,
                                 onTap:
                                     (authController.isLoading || !fieldsFilled)

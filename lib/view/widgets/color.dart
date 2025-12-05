@@ -6,3 +6,4 @@ final backgroundColor = Color(0xFFFFFFFF);
 final borderColor = Color(0xFFCDCDCD);
 final textColor = Color(0xFF1E1E1E);
 final textColor2 = Color(0xFF757575);
+final oauthTextColor = Color(0xFF2C2C2C);

@@ -43,6 +43,16 @@ class CustomTextWidget extends StatelessWidget {
             decorationColor: decorationColor,
             height: height,
           )
+        : fontFamily == 'Manrope'
+        ? GoogleFonts.manrope(
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            color: color,
+            letterSpacing: letterSpacing,
+            decoration: decoration,
+            decorationColor: decorationColor,
+            height: height,
+          )
         : GoogleFonts.inter(
             fontSize: fontSize,
             fontWeight: fontWeight,

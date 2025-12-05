@@ -34,11 +34,17 @@ class $AssetsSvgGen {
   /// File path: assets/svg/.gitkeep
   String get aGitkeep => 'assets/svg/.gitkeep';
 
+  /// File path: assets/svg/apple.svg
+  SvgGenImage get apple => const SvgGenImage('assets/svg/apple.svg');
+
+  /// File path: assets/svg/google.svg.svg
+  SvgGenImage get googleSvg => const SvgGenImage('assets/svg/google.svg.svg');
+
   /// File path: assets/svg/logo.svg
   SvgGenImage get logo => const SvgGenImage('assets/svg/logo.svg');
 
   /// List of all assets
-  List<dynamic> get values => [aGitkeep, logo];
+  List<dynamic> get values => [aGitkeep, googleSvg, googleSvg, logo];
 }
 
 class Assets {

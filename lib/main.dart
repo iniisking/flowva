@@ -10,8 +10,13 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables
-  await dotenv.load(fileName: '.env');
+  // Load environment variables (if .env file exists, otherwise use system env vars)
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (e) {
+    // .env file doesn't exist (e.g., in CI/CD), use system environment variables
+    // Environment variables can be set in CI/CD workflows
+  }
 
   // Initialize Supabase
   await SupabaseService.initialize(

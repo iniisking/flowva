@@ -2,6 +2,7 @@ import 'package:flowva/config/supabase_config.dart';
 import 'package:flowva/core/services/supabase_service.dart';
 import 'package:flowva/core/controller/auth_controller.dart';
 import 'package:flowva/core/auth/auth_wrapper.dart';
+import 'package:flowva/view/widgets/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,15 +15,29 @@ void main() async {
   try {
     await dotenv.load(fileName: '.env');
   } catch (e) {
-    // .env file doesn't exist (e.g., in CI/CD), use system environment variables
+    // .env file doesn't exist (e.g., in CI/CD), uspe system environment variables
     // Environment variables can be set in CI/CD workflows
   }
 
   // Initialize Supabase
-  await SupabaseService.initialize(
-    supabaseUrl: SupabaseConfig.supabaseUrl,
-    supabaseAnonKey: SupabaseConfig.supabaseAnonKey,
-  );
+  try {
+    final supabaseUrl = SupabaseConfig.supabaseUrl;
+    final supabaseAnonKey = SupabaseConfig.supabaseAnonKey;
+
+    if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
+      throw Exception(
+        'Supabase URL or Anon Key is empty. Please check your configuration.',
+      );
+    }
+
+    await SupabaseService.initialize(
+      supabaseUrl: supabaseUrl,
+      supabaseAnonKey: supabaseAnonKey,
+    );
+  } catch (e) {
+    print('Error initializing Supabase: $e');
+    rethrow;
+  }
 
   runApp(const MyApp());
 }
@@ -44,6 +59,7 @@ class MyApp extends StatelessWidget {
             title: 'Flowva',
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              scaffoldBackgroundColor: homeBackgroundColor,
             ),
             home: const AuthWrapper(),
           ),

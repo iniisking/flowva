@@ -20,12 +20,54 @@ class $AssetsImageGen {
   /// File path: assets/image/.gitkeep
   String get aGitkeep => 'assets/image/.gitkeep';
 
+  /// File path: assets/image/center shining light.png
+  AssetGenImage get centerShiningLight =>
+      const AssetGenImage('assets/image/center shining light.png');
+
+  /// File path: assets/image/left shining light.png
+  AssetGenImage get leftShiningLight =>
+      const AssetGenImage('assets/image/left shining light.png');
+
+  /// File path: assets/image/linked in icon.png
+  AssetGenImage get linkedInIcon =>
+      const AssetGenImage('assets/image/linked in icon.png');
+
   /// File path: assets/image/log in background blur.png
   AssetGenImage get logInBackgroundBlur =>
       const AssetGenImage('assets/image/log in background blur.png');
 
+  /// File path: assets/image/megaphone icon.png
+  AssetGenImage get megaphoneIcon =>
+      const AssetGenImage('assets/image/megaphone icon.png');
+
+  /// File path: assets/image/oraimo earbuds.png
+  AssetGenImage get oraimoEarbuds =>
+      const AssetGenImage('assets/image/oraimo earbuds.png');
+
+  /// File path: assets/image/right shining light.png
+  AssetGenImage get rightShiningLight =>
+      const AssetGenImage('assets/image/right shining light.png');
+
+  /// File path: assets/image/whatsapp icon.png
+  AssetGenImage get whatsappIcon =>
+      const AssetGenImage('assets/image/whatsapp icon.png');
+
+  /// File path: assets/image/x icon.png
+  AssetGenImage get xIcon => const AssetGenImage('assets/image/x icon.png');
+
   /// List of all assets
-  List<dynamic> get values => [aGitkeep, logInBackgroundBlur];
+  List<dynamic> get values => [
+    aGitkeep,
+    centerShiningLight,
+    leftShiningLight,
+    linkedInIcon,
+    logInBackgroundBlur,
+    megaphoneIcon,
+    oraimoEarbuds,
+    rightShiningLight,
+    whatsappIcon,
+    xIcon,
+  ];
 }
 
 class $AssetsSvgGen {
@@ -37,14 +79,28 @@ class $AssetsSvgGen {
   /// File path: assets/svg/apple.svg
   SvgGenImage get apple => const SvgGenImage('assets/svg/apple.svg');
 
+  /// File path: assets/svg/copy icon.svg
+  SvgGenImage get copyIcon => const SvgGenImage('assets/svg/copy icon.svg');
+
   /// File path: assets/svg/google.svg.svg
   SvgGenImage get googleSvg => const SvgGenImage('assets/svg/google.svg.svg');
 
   /// File path: assets/svg/logo.svg
   SvgGenImage get logo => const SvgGenImage('assets/svg/logo.svg');
 
+  /// File path: assets/svg/platform cube.svg
+  SvgGenImage get platformCube =>
+      const SvgGenImage('assets/svg/platform cube.svg');
+
   /// List of all assets
-  List<dynamic> get values => [aGitkeep, googleSvg, googleSvg, logo];
+  List<dynamic> get values => [
+    aGitkeep,
+    apple,
+    copyIcon,
+    googleSvg,
+    logo,
+    platformCube,
+  ];
 }
 
 class Assets {

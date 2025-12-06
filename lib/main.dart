@@ -3,6 +3,7 @@ import 'package:flowva/core/services/supabase_service.dart';
 import 'package:flowva/core/controller/auth_controller.dart';
 import 'package:flowva/core/auth/auth_wrapper.dart';
 import 'package:flowva/view/widgets/color.dart';
+import 'package:flowva/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,7 +16,7 @@ void main() async {
   try {
     await dotenv.load(fileName: '.env');
   } catch (e) {
-    // .env file doesn't exist (e.g., in CI/CD), uspe system environment variables
+    // .env file doesn't exist (e.g., in CI/CD), use system environment variables
     // Environment variables can be set in CI/CD workflows
   }
 
@@ -34,8 +35,8 @@ void main() async {
       supabaseUrl: supabaseUrl,
       supabaseAnonKey: supabaseAnonKey,
     );
-  } catch (e) {
-    print('Error initializing Supabase: $e');
+  } catch (e, stackTrace) {
+    AppLogger.error('Error initializing Supabase: $e', e, stackTrace);
     rethrow;
   }
 

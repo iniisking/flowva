@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _hours = 24;
   int _minutes = 0;
   int _seconds = 0;
-  int _referralCount = 1;
+  final int _referralCount = 1;
 
   @override
   void initState() {
@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     vertical: 12.spMin,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.spMin),
                   ),
                   child: Row(
@@ -317,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     vertical: 14.spMin,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.spMin),
                   ),
                   child: Row(

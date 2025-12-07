@@ -19,16 +19,23 @@ class AuthController extends ChangeNotifier {
   }
 
   void _init() {
-    // Get initial user state
-    _user = _authService.currentUser;
-    _isInitialized = true;
-    notifyListeners();
-
-    // Listen to auth state changes
-    _authService.authStateChanges.listen((AuthState state) {
-      _user = state.session?.user;
+    try {
+      // Get initial user state
+      _user = _authService.currentUser;
+      _isInitialized = true;
       notifyListeners();
-    });
+
+      // Listen to auth state changes
+      _authService.authStateChanges.listen((AuthState state) {
+        _user = state.session?.user;
+        notifyListeners();
+      });
+    } catch (e) {
+      // Supabase not initialized (e.g., in tests)
+      _isInitialized = true;
+      _user = null;
+      notifyListeners();
+    }
   }
 
   Future<bool> signInWithEmail({

@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flowva/core/services/supabase_service.dart';
 
 class AuthService {
-  final SupabaseClient _supabase = SupabaseService.client;
+  SupabaseClient get _supabase => SupabaseService.client;
 
   /// Sign in with email and password
   Future<AuthResponse> signInWithEmail({
